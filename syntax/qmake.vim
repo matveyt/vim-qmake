@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:     qmake
 " Maintainer:   matveyt
-" Last Change:  2021 Jan 20
+" Last Change:  2021 Jan 21
 " License:      VIM License
 " URL:          https://github.com/matveyt/vim-qmake
 
@@ -17,17 +17,19 @@ set cpo&vim
 syn keyword qmakeTodo TODO FIXME XXX contained
 syn match qmakeComment excludenl /#.*$/ contains=@Spell,qmakeTodo
     \ containedin=ALLBUT,qmakeComment
-syn match qmakeEscape extend /\\$\|\\[[\]{}()$\\'"]/
+syn match qmakeEscape extend excludenl /\\[[\]{}()$\\'"]/
     \ containedin=ALLBUT,qmakeComment,qmakeEscape
+syn match qmakeEscape extend /\\$/ containedin=ALLBUT,qmakeComment,qmakeEscape
 
 " Operators & RHS of assignment
-syn match qmakeOperator /[!|:]/
+syn match qmakeOperator /[|:!]/
 syn match qmakeOperator /[-+*~]\?=/ nextgroup=qmakeRHS
 syn region qmakeRHS start=/./ end=/$/ transparent contained
     \ contains=qmakeExpansion,qmakeQuotedString
 
-" All expansions
-syn match qmakeExpansion /\$\$\k\@=/ nextgroup=qmakeVariable,qmakeFunction
+" All expansions (in order)
+syn match qmakeExpansion keepend /\$\$\k\+/ contains=qmakeVariable
+syn match qmakeExpansion /\$\$\k\+(\@=/ contains=qmakeFunction
 syn match qmakeExpansion /\$\${[^}]*}/ contains=qmakeVariable,qmakeFunction
 syn match qmakeExpansion /\$\$\?([^)]*)/ contains=qmakeVariable
 syn match qmakeExpansion /\$\$\[[^\]]*\]/ contains=qmakeVariable
@@ -35,13 +37,12 @@ syn match qmakeExpansion /\$\$\[[^\]]*\]/ contains=qmakeVariable
 " Quoted String
 syn region qmakeQuotedString start=/\z(['"]\)/ end=/\z1/ end=/$/ contains=qmakeExpansion
 
-" Variables, functions, scopes
-" Note: qmakeVariable must precede qmakeFunction and qmakeScope to get lesser priority
-syn match qmakeVariable /\<\k\+\>/
-syn match qmakeFunction /\<\k\+(\@=/ nextgroup=qmakeArgs
-syn region qmakeArgs excludenl start=/(/ end=/)/ end=/$/ contained
-    \ contains=qmakeExpansion,qmakeQuotedString
-syn match qmakeScope /[-+[:alnum:]*?[\]]\+\(\s*[|:{]\)\@=/
+" Variables, functions, scopes (in order)
+syn match qmakeVariable /[[:keyword:]\/]\+/
+syn match qmakeFunction /[[:keyword:]\/]\+\(\s*(\)\@=/ skipwhite nextgroup=qmakeArgs
+syn match qmakeScope /[-+[:keyword:]*?[\]]\+\(\s*[|:{]\)\@=/
+syn region qmakeArgs start=/(/ end=/)/ end=/$/ contained
+    \ contains=qmakeArgs,qmakeExpansion,qmakeQuotedString
 
 hi def link qmakeTodo Todo
 hi def link qmakeComment Comment
