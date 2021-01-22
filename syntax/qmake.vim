@@ -38,9 +38,9 @@ syn match qmakeExpansion /\$\$\[[^\]]*\]/ contains=qmakeVariable
 syn region qmakeQuotedString start=/\z(['"]\)/ end=/\z1/ end=/$/ contains=qmakeExpansion
 
 " Variables, functions, scopes (in order)
-syn match qmakeVariable /[[:keyword:]\/]\+/
-syn match qmakeFunction /[[:keyword:]\/]\+\(\s*(\)\@=/ skipwhite nextgroup=qmakeArgs
-syn match qmakeScope /[-+[:keyword:]*?[\]]\+\(\s*[|:{]\)\@=/
+syn match qmakeVariable "[[:keyword:]/]\+"
+syn match qmakeFunction "[[:keyword:]/]\+\s*(\@=" nextgroup=qmakeArgs
+syn match qmakeScope /[-+[:keyword:]*?[\]]\+\s*[|:{]\@=/
 syn region qmakeArgs start=/(/ end=/)/ end=/$/ contained
     \ contains=qmakeArgs,qmakeExpansion,qmakeQuotedString
 
