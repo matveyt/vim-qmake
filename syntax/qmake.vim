@@ -1,7 +1,7 @@
 " Vim syntax file
 " Language:     qmake
 " Maintainer:   matveyt
-" Last Change:  2021 Jan 21
+" Last Change:  2021 Jan 22
 " License:      VIM License
 " URL:          https://github.com/matveyt/vim-qmake
 
@@ -29,7 +29,8 @@ syn region qmakeRHS start=/./ end=/$/ transparent contained
 
 " All expansions (in order)
 syn match qmakeExpansion keepend /\$\$\k\+/ contains=qmakeVariable
-syn match qmakeExpansion /\$\$\k\+(\@=/ contains=qmakeFunction
+syn match qmakeExpansion keepend /\$\$\k\+(\@=/ contains=qmakeFunction
+    \ nextgroup=qmakeArgs
 syn match qmakeExpansion /\$\${[^}]*}/ contains=qmakeVariable,qmakeFunction
 syn match qmakeExpansion /\$\$\?([^)]*)/ contains=qmakeVariable
 syn match qmakeExpansion /\$\$\[[^\]]*\]/ contains=qmakeVariable
@@ -42,7 +43,7 @@ syn match qmakeVariable "[[:keyword:]/]\+"
 syn match qmakeFunction "[[:keyword:]/]\+\s*(\@=" nextgroup=qmakeArgs
 syn match qmakeScope /[-+[:keyword:]*?[\]]\+\s*[|:{]\@=/
 syn region qmakeArgs start=/(/ end=/)/ end=/$/ contained
-    \ contains=qmakeArgs,qmakeExpansion,qmakeQuotedString
+    \ contains=qmakeExpansion,qmakeQuotedString,qmakeArgs
 
 hi def link qmakeTodo Todo
 hi def link qmakeComment Comment
