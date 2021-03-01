@@ -1,7 +1,7 @@
 " Vim indent file
 " Language:     qmake
 " Maintainer:   matveyt
-" Last Change:  2021 Jan 23
+" Last Change:  2021 Mar 01
 " License:      VIM License
 " URL:          https://github.com/matveyt/vim-qmake
 
@@ -61,7 +61,7 @@ function GetQmakeIndent(lnum)
 endfunction
 
 " Does a line end with odd number of backslashes?
-function! s:has_linecont(lnum)
+function s:has_linecont(lnum)
     let l:line = getline(a:lnum)
     return !empty(l:line) && stridx(l:line, '#') < 0 &&
         \ (strlen(l:line) - match(l:line, '\\*$')) % 2
