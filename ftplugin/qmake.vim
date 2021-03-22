@@ -1,7 +1,7 @@
 " Vim filetype plugin
 " Language:     qmake
 " Maintainer:   matveyt
-" Last Change:  2021 Jan 27
+" Last Change:  2021 Mar 19
 " License:      VIM License
 " URL:          https://github.com/matveyt/vim-qmake
 
@@ -11,7 +11,7 @@ endif
 let b:did_ftplugin = 1
 
 let b:undo_ftplugin = 'setl com< cms< def< fen< fdm< fo< inc< isk<'
-setlocal comments=:# commentstring=#\ %s
+setlocal comments=:# commentstring=#%s
 setlocal define=\\<define\\%(Test\\\|Replace\\)\\>
 setlocal foldenable foldmethod=indent
 setlocal formatoptions-=t formatoptions+=croqj
